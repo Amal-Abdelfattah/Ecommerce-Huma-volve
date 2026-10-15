@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:ecommerce_app_huma_volve/features/auth/data/auth_service.dart';
+import 'package:ecommerce_app_huma_volve/features/main_navigation/presentation/screens/main_navigation_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/theme.dart';
-import '../../../main_navigation/screens/main_navigation_screen.dart';
 import '../../sign_up/screens/sign_up_screen.dart';
 
 class LoginScreen extends StatefulWidget {

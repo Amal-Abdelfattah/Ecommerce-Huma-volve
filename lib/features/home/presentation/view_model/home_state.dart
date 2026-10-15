@@ -1,5 +1,5 @@
-import 'package:ecommerce_app_huma_volve/features/home/data/model/category_model.dart';
-import 'package:ecommerce_app_huma_volve/features/home/data/model/product_model.dart';
+import 'package:ecommerce_app_huma_volve/features/home/domain/entites/home_category_entity.dart';
+import 'package:ecommerce_app_huma_volve/features/home/domain/entites/home_category_product.dart';
 
 abstract class HomeState {}
 
@@ -8,7 +8,7 @@ class HomeInitial extends HomeState {}
 class CategoryLoading extends HomeState {}
 
 class CategorySuccess extends HomeState {
-  final List<CategoryModel> categories;
+  final List<HomeCategoryEntity> categories;
 
   CategorySuccess(this.categories);
 }
@@ -22,7 +22,7 @@ class CategoryFailure extends HomeState {
 class ProductLoading extends HomeState {}
 
 class ProductSuccess extends HomeState {
-  final List<ProductModel> products;
+  final List<HomeProductEntity> products;
 
   ProductSuccess(this.products);
 }

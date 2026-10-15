@@ -1,13 +1,17 @@
 import 'package:ecommerce_app_huma_volve/core/network/dio_client.dart';
-import 'package:ecommerce_app_huma_volve/features/home/data/service/home_service.dart';
-import 'package:ecommerce_app_huma_volve/features/home/presentation/cubit/home_cubit.dart';
+import 'package:ecommerce_app_huma_volve/core/theme.dart';
+import 'package:ecommerce_app_huma_volve/features/cart/screens/cart_screen.dart';
+import 'package:ecommerce_app_huma_volve/features/home/data/data_source/home_remote_dataSource.dart';
+import 'package:ecommerce_app_huma_volve/features/home/data/data_source/home_remote_dataSource_imp.dart';
+import 'package:ecommerce_app_huma_volve/features/home/data/repo/home_repo_imp.dart';
+import 'package:ecommerce_app_huma_volve/features/home/domain/repo/home_reop.dart';
+import 'package:ecommerce_app_huma_volve/features/home/domain/use_cases/get_categories_use_case.dart';
+import 'package:ecommerce_app_huma_volve/features/home/domain/use_cases/get_products_use_case.dart';
+import 'package:ecommerce_app_huma_volve/features/home/presentation/view_model/home_cubit.dart';
+import 'package:ecommerce_app_huma_volve/features/home/presentation/view/home_screen.dart';
+import 'package:ecommerce_app_huma_volve/features/profile/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../core/theme.dart';
-import '../../home/presentation/screens/home_screen.dart';
-import '../../cart/screens/cart_screen.dart';
-import '../../profile/screens/profile_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -18,15 +22,22 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _currentIndex = 0;
-  late final DioClient dioClient;
-  late final HomeService homeService;
+  late final HomeRemoteDatasource homeRemoteDataSource;
+  late final HomeRepo homeRepository;
+  late final GetCategoriesUseCase getCategoriesUseCase;
+  late final GetProductsUseCase getProductsUseCase;
   late final HomeCubit homeCubit;
 
   @override
   void initState() {
-    dioClient = DioClient();
-    homeService = HomeService(dioClient);
-    homeCubit = HomeCubit(homeService);
+    homeRemoteDataSource = HomeRemoteDatasourceImp(DioClient());
+    homeRepository = HomeRepoImp(homeRemoteDataSource);
+    getCategoriesUseCase = GetCategoriesUseCase(homeRepository);
+    getProductsUseCase = GetProductsUseCase(homeRepository);
+    homeCubit = HomeCubit(
+      getProductsUseCase: getProductsUseCase,
+      getCategoriesUseCase: getCategoriesUseCase,
+    );
     super.initState();
   }
 
