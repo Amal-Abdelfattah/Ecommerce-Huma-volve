@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:ecommerce_app_huma_volve/features/home/domain/entites/home_category_product.dart'; // استيراد الـ Entity الحقيقي
 
 import '../../../core/theme.dart';
@@ -59,6 +60,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   child: const Icon(Icons.favorite_border, size: 18),
                 ),
                 onPressed: () {},
+              ),
+              IconButton(
+                icon: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.9),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.share_outlined, size: 18),
+                ),
+                onPressed: () {
+                  SharePlus.instance.share(
+                    ShareParams(
+                      title: widget.product.title,
+                      text:
+                          'Check out ${widget.product.title} on Huma-volve\n\nhumavolve://product/${widget.product.id}',
+                    ),
+                  );
+                },
               ),
               const SizedBox(width: 8),
             ],
