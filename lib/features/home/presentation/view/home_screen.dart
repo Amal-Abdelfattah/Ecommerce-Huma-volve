@@ -17,11 +17,29 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedCategoryIndex = 0;
+  final ScrollController _scrollController = ScrollController(); 
 
   @override
   void initState() {
     super.initState();
     context.read<HomeCubit>().loadHomeData();
+    _scrollController.addListener(_onScroll); 
+  }
+
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final position = _scrollController.position;
+    if (position.pixels >= position.maxScrollExtent - 300) {
+      context.read<HomeCubit>().loadMoreProducts();
+    }
+  }
+
+  // NEW
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -30,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppTheme.background,
       body: SafeArea(
         child: CustomScrollView(
+          controller: _scrollController, 
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
@@ -200,6 +219,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       delegate: SliverChildBuilderDelegate((context, index) {
                         return ProductCard(productModel: products[index]);
                       }, childCount: products.length),
+                    ),
+                  );
+                }
+                return const SliverToBoxAdapter(child: SizedBox.shrink());
+              },
+            ),
+            
+            BlocBuilder<HomeCubit, HomeState>(
+              buildWhen: (previous, current) =>
+                  current is ProductSuccess ||
+                  current is ProductLoading ||
+                  current is ProductFailure,
+              builder: (context, state) {
+                if (state is ProductSuccess && state.isLoadingMore) {
+                  return const SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Center(child: CircularProgressIndicator()),
                     ),
                   );
                 }

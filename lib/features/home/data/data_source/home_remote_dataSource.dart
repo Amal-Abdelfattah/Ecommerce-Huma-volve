@@ -3,5 +3,9 @@ import 'package:ecommerce_app_huma_volve/features/home/data/model/product_model.
 
 abstract class HomeRemoteDatasource {
   Future<List<CategoryModel>> getCategories();
-  Future<List<ProductModel>> getProducts(int? categoryId);
+  Future<List<ProductModel>> getProducts(
+    int? categoryId, {
+    int offset = 0, 
+    int limit = 10, 
+  });
 }

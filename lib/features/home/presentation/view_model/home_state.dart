@@ -23,8 +23,14 @@ class ProductLoading extends HomeState {}
 
 class ProductSuccess extends HomeState {
   final List<HomeProductEntity> products;
+  final bool hasReachedMax; 
+  final bool isLoadingMore; 
 
-  ProductSuccess(this.products);
+  ProductSuccess(
+    this.products, {
+    this.hasReachedMax = false, 
+    this.isLoadingMore = false, 
+  });
 }
 
 class ProductFailure extends HomeState {
